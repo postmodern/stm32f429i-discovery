@@ -14,7 +14,7 @@
  * Including this header also includes stm32f4xx.h and
  * stm32f4xx_conf.h, which includes stm32f4xx_gpio.h
  */
-#include "stm32f429i_discovery.h"
+#include <stm32f429i_discovery.h>
 
 /* We make code more readable by giving the led-pins
  * symbolic names depending on the led color.
