@@ -23,11 +23,11 @@
  */
 #define GREEN 	LED4_PIN
 #define RED	LED3_PIN
-#define ALL_LEDS (GREEN | RED) // all leds
+#define ALL_LEDS	(GREEN | RED) // all leds
 
 /* This is how long we wait in the delay function. */
-#define PAUSE_LONG  4000000L
-#define PAUSE_SHORT 1000000L
+#define PAUSE_LONG 	4000000L
+#define PAUSE_SHORT	1000000L
 
 /* The GPIO port where the leds are connected
  * (same pin numbers are present on many GPIO ports).
@@ -36,7 +36,7 @@
  * GPIOG is just a memory address casted to a GPIO_TypeDef pointer
  * GPIO_TypeDef is defined in stm32f429i_discovery.h
  */
-#define LEDS_GPIO_PORT (GPIOG)
+#define LEDS_GPIO_PORT	GPIOG
 
 /* This array stores the led order used to switch them on and off.
  * We use this order by iterating over the array.
@@ -59,8 +59,10 @@ GPIO_InitTypeDef GPIO_InitStructure;
  * we would use timers and interrupts. */
 static void delay(__IO uint32_t nCount)
 {
-    while(nCount--)
-        __asm("nop"); // do nothing
+	while(nCount--)
+	{
+		__asm("nop"); // do nothing
+	}
 }
 
 /* Initialize the GPIOG port.
@@ -69,40 +71,44 @@ static void delay(__IO uint32_t nCount)
  */
 static void setup_leds(void)
 {
-    /* Enable the GPIOG peripheral clock before we
-     * actually setup GPIOG.
-     * This function is declared in stm32f4xx_rcc.h
-     * and implemented in stm32f4xx_rcc.c
-     */
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
+	/* Enable the GPIOG peripheral clock before we
+	 * actually setup GPIOG.
+	 * This function is declared in stm32f4xx_rcc.h
+	 * and implemented in stm32f4xx_rcc.c
+	 */
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
 
-    /* which pins we select to setup
-     * every pin number is mapped to a bit number */
-    GPIO_InitStructure.GPIO_Pin   = ALL_LEDS;
-    /* pins in output mode */
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
-    /* high clock speed for the selected pins
-     * see stm32f4xx_gpio.h for different speeds
-     * (enum GPIOSpeed_TypeDef) */
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-    /* operating output type for the selected pins
-     * see the enum GPIOOType_TypeDef in stm32f4xx_gpio.h
-     * for different values.
-     * PP stands for "push/pull", OD stands for "open drain"
-     * google for "push pull vs open drain" */
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    /* operating Pull-up/Pull down for the selected pins */
-    GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+	/* which pins we select to setup
+	 * every pin number is mapped to a bit number */
+	GPIO_InitStructure.GPIO_Pin   = ALL_LEDS;
 
-    /* Write this data into memory at the address
-     * mapped to GPIO device port D, where the led pins
-     * are connected */
-    GPIO_Init(LEDS_GPIO_PORT, &GPIO_InitStructure);
-    /* This call resolves in
-     * GPIO_Init((GPIO_TypeDef *) 0X40020C00, &GPIO_InitStructure)
-     * where 0X40020C00 is the memory address mapped to
-     * the GPIOG port. Without the library we would have to know all
-     * these memory addresses. */
+	/* pins in output mode */
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+
+	/* high clock speed for the selected pins
+	 * see stm32f4xx_gpio.h for different speeds
+	 * (enum GPIOSpeed_TypeDef) */
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+
+	/* operating output type for the selected pins
+	 * see the enum GPIOOType_TypeDef in stm32f4xx_gpio.h
+	 * for different values.
+	 * PP stands for "push/pull", OD stands for "open drain"
+	 * google for "push pull vs open drain" */
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+
+	/* operating Pull-up/Pull down for the selected pins */
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+
+	/* Write this data into memory at the address
+	 * mapped to GPIO device port D, where the led pins
+	 * are connected */
+	GPIO_Init(LEDS_GPIO_PORT, &GPIO_InitStructure);
+	/* This call resolves in
+	 * GPIO_Init((GPIO_TypeDef *) 0X40020C00, &GPIO_InitStructure)
+	 * where 0X40020C00 is the memory address mapped to
+	 * the GPIOG port. Without the library we would have to know all
+	 * these memory addresses. */
 }
 
 /* Turn on the color leds one after another.
@@ -121,33 +127,40 @@ static void setup_leds(void)
  */
 static void led_round(void)
 {
-    int i;
-    for (i = 0; i < LEDn; i++)
-    {
-        /* turn on led */
-        GPIO_SetBits(LEDS_GPIO_PORT, leds[i]);
-        /* wait a while */
-        delay(PAUSE_LONG);
-        /* turn off all leds */
-        GPIO_ResetBits(LEDS_GPIO_PORT, ALL_LEDS);
-    }
+	int i;
+
+	for (i=0; i<LEDn; i++)
+	{
+		/* turn on led */
+		GPIO_SetBits(LEDS_GPIO_PORT, leds[i]);
+
+		/* wait a while */
+		delay(PAUSE_LONG);
+
+		/* turn off all leds */
+		GPIO_ResetBits(LEDS_GPIO_PORT, ALL_LEDS);
+	}
 }
 
 /* Turn all leds on and off 4 times. */
 static void flash_all_leds(void)
 {
-    int i;
-    for (i = 0; i < 4; i++)
-    {
-        /* Turn on all user leds */
-        GPIO_SetBits(LEDS_GPIO_PORT, ALL_LEDS);
-        /* Wait a short time */
-        delay(PAUSE_SHORT);
-        /* Turn off all leds */
-        GPIO_ResetBits(LEDS_GPIO_PORT, ALL_LEDS);
-        /* Wait again before looping */
-        delay(PAUSE_SHORT);
-    }
+	int i;
+
+	for (i=0; i<4; i++)
+	{
+		/* Turn on all user leds */
+		GPIO_SetBits(LEDS_GPIO_PORT, ALL_LEDS);
+
+		/* Wait a short time */
+		delay(PAUSE_SHORT);
+
+		/* Turn off all leds */
+		GPIO_ResetBits(LEDS_GPIO_PORT, ALL_LEDS);
+
+		/* Wait again before looping */
+		delay(PAUSE_SHORT);
+	}
 }
 
 /* Main function, the entry point of this program.
@@ -155,14 +168,15 @@ static void flash_all_leds(void)
  * Libraries/CMSIS/ST/STM32F4xx/Source/Templates/TrueSTUDIO/startup_stm32f4xx.s
  * (line 101)
  */
-int main(void)
+int main()
 {
-    setup_leds();
-    while (1)
-    {
-        led_round();
-        flash_all_leds();
-    }
+	setup_leds();
 
-    return 0; // never returns actually
+	while (1)
+	{
+		led_round();
+		flash_all_leds();
+	}
+
+	return 0; // never returns actually
 }
