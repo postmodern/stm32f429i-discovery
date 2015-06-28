@@ -109,4 +109,4 @@ flash:
 .PHONY: debug
 debug:
 # before you start gdb, you must start st-util
-	$(GDB) $(PROJECT).elf
+	$(GDB) -ex "tar ext :4242" $(PROJECT).elf
