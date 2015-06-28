@@ -21,9 +21,9 @@
  * The values LED4_PIN etc are defined in stm32f4_discovery.h
  * as GPIO_Pin_12 etc.
  */
-#define GREEN  LED4_PIN
-#define ORANGE LED3_PIN
-#define ALL_LEDS (GREEN | ORANGE) // all leds
+#define GREEN 	LED4_PIN
+#define RED	LED3_PIN
+#define ALL_LEDS (GREEN | RED) // all leds
 
 /* This is how long we wait in the delay function. */
 #define PAUSE_LONG  4000000L
@@ -43,7 +43,7 @@
  * LEDn is the number of user leds on the discovery board
  * and is defined in stm32f4_discovery.h.
  */
-static uint16_t leds[LEDn] = {GREEN, ORANGE};
+static uint16_t leds[LEDn] = {GREEN, RED};
 
 
 /* Structure storing the information used to intialize
