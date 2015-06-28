@@ -147,7 +147,7 @@ static void flash_all_leds(void)
 {
 	int i;
 
-	for (i=0; i<4; i++)
+	for (i=0; i<LEDn; i++)
 	{
 		/* Turn on all user leds */
 		GPIO_SetBits(LEDS_GPIO_PORT, ALL_LEDS);
