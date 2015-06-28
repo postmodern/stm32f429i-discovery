@@ -31,12 +31,12 @@
 
 /* The GPIO port where the leds are connected
  * (same pin numbers are present on many GPIO ports).
- * Leds are connected to pins 12 through 15 on GPIO port D,
- * so we use the port GPIOD.
- * GPIOD is just a memory address casted to a GPIO_TypeDef pointer
- * GPIO_TypeDef is defined in stm32f4xx.h
+ * Leds are connected to pins 13 and 14 on GPIO port G,
+ * so we use the port GPIOG.
+ * GPIOG is just a memory address casted to a GPIO_TypeDef pointer
+ * GPIO_TypeDef is defined in stm32f429i_discovery.h
  */
-#define LEDS_GPIO_PORT (GPIOD)
+#define LEDS_GPIO_PORT (GPIOG)
 
 /* This array stores the led order used to switch them on and off.
  * We use this order by iterating over the array.
@@ -63,18 +63,18 @@ static void delay(__IO uint32_t nCount)
         __asm("nop"); // do nothing
 }
 
-/* Initialize the GPIOD port.
+/* Initialize the GPIOG port.
  * See also the comments beginning stm32f4xx_gpio.c
  * (found in the library)
  */
 static void setup_leds(void)
 {
-    /* Enable the GPIOD peripheral clock before we
-     * actually setup GPIOD.
+    /* Enable the GPIOG peripheral clock before we
+     * actually setup GPIOG.
      * This function is declared in stm32f4xx_rcc.h
      * and implemented in stm32f4xx_rcc.c
      */
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
 
     /* which pins we select to setup
      * every pin number is mapped to a bit number */
@@ -101,7 +101,7 @@ static void setup_leds(void)
     /* This call resolves in
      * GPIO_Init((GPIO_TypeDef *) 0X40020C00, &GPIO_InitStructure)
      * where 0X40020C00 is the memory address mapped to
-     * the GPIOD port. Without the library we would have to know all
+     * the GPIOG port. Without the library we would have to know all
      * these memory addresses. */
 }
 
