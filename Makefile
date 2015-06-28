@@ -14,11 +14,11 @@ STM_DIR=../STM32F429I-Discovery_FW_V1.0.1
 # This is where the source files are located,
 # which are not in the current directory
 # (the sources of the standard peripheral library, which we use)
-STM_PERIPH_DIR = $(STM_DIR)/Libraries/STM32F4xx_StdPeriph_Driver/src
+STM_PERIPH_SRC = $(STM_DIR)/Libraries/STM32F4xx_StdPeriph_Driver/src
 
 # Tell make to look in that folder if it cannot find a source
 # in the current directory
-vpath %.c $(STM_PERIPH_DIR)
+vpath %.c $(STM_PERIPH_SRC)
 
 # My source file
 SRCS   = main.c
